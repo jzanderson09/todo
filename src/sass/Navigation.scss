@@ -1,0 +1,11 @@
+.Navigation {
+    background: rgba(255, 255, 255, 0.3);
+    .nav-tabs {
+        .nav-item {
+            color: #fff;
+        }
+        .active {
+            color: #000;
+        }
+    }
+}
