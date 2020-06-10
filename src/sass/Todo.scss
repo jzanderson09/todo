@@ -1,0 +1,17 @@
+.Todo {
+    width: 80%;
+    margin: 3% auto;
+    box-shadow: 1rem 1rem 1rem #000;
+    .jumbotron {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        .optn-btns {
+            width: 100%;
+            margin: 10% auto 0;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-evenly;
+        }
+    }    
+}
