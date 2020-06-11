@@ -37,17 +37,6 @@ const todo = [
     }
 ];
 
-// Soundbites:
-const clickIncomplete = new Audio(Incomplete);
-const clickDone = new Audio(Done);
-const clickCompleted = new Audio(Completed);
-const clickAlert = new Audio(Alert);
-const clickClearSelected = new Audio(clearSelected);
-const enterAddTask = new Audio(newTask);
-const clickSelectAll = new Audio(selectAll);
-const clickDeselectAll = new Audio(deselectAll);
-const error = new Audio(errorSound);
-
 class Navigation extends Component {
     constructor() {
         super();
@@ -56,15 +45,15 @@ class Navigation extends Component {
             incomplete: 'danger',
             done: 'success',
             soundbites: {
-                incomplete: clickIncomplete,
-                done: clickDone,
-                completed: clickCompleted,
-                clearSelected: clickClearSelected,
-                alert: clickAlert,
-                addTask: enterAddTask,
-                selectAll: clickSelectAll,
-                deselectAll: clickDeselectAll,
-                error: error
+                incomplete: new Audio(Incomplete),
+                done: new Audio(Done),
+                completed: new Audio(Completed),
+                clearSelected: new Audio(clearSelected),
+                alert: new Audio(Alert),
+                addTask: new Audio(newTask),
+                selectAll: new Audio(selectAll),
+                deselectAll: new Audio(deselectAll),
+                error: new Audio(errorSound)
             },
             allSelected: false
         };
