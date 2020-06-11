@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Jumbotron } from 'react-bootstrap';
-import '../../sass/Todo.scss';
+import '../../sass/Todo/Todo.scss';
 
 // Components:
 import Task from './Task';
@@ -18,6 +18,7 @@ const Todo = props => {
         setNewTask('');
     };
 
+    // When there are tasks in the todoList:
     if (props.todoList.length > 0) {
         return (
             <div className='Todo'>

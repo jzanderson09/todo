@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import '../sass/Navigation.scss';
+import '../sass/Todo/Navigation.scss';
 
 //Components:
 import Todo from './Todo/Todo';
@@ -13,7 +13,6 @@ import Alert from '../soundbites/click-prompt.mp3';
 import clearSelected from '../soundbites/click-clear-selected.mp3';
 import newTask from '../soundbites/add-task.mp3';
 import selectAll from '../soundbites/click-select-all.mp3';
-import deselectAll from '../soundbites/click-deselect.mp3';
 import errorSound from '../soundbites/error.mp3';
 
 const todo = [
@@ -52,7 +51,6 @@ class Navigation extends Component {
                 alert: new Audio(Alert),
                 addTask: new Audio(newTask),
                 selectAll: new Audio(selectAll),
-                deselectAll: new Audio(deselectAll),
                 error: new Audio(errorSound)
             },
             allSelected: false
@@ -144,8 +142,9 @@ class Navigation extends Component {
 
     // Selects all tasks as ready for completion:
     selectAll = () => {
-        if (this.state.allSelected) {
-            this.state.soundbites.deselectAll.play();
+        const selectionCheck = this.state.todoList.filter(task => task.completed && task.status === this.state.done);
+        if (selectionCheck.length > 0) {
+            this.state.soundbites.clearSelected.play();
             const cleared = this.state.todoList.map(taskObj => {
               return {
                 ...taskObj,
