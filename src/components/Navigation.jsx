@@ -12,6 +12,9 @@ import Completed from '../soundbites/click-completed.mp3';
 import Alert from '../soundbites/click-prompt.mp3';
 import clearSelected from '../soundbites/click-clear-selected.mp3';
 import newTask from '../soundbites/add-task.mp3';
+import selectAll from '../soundbites/click-select-all.mp3';
+import deselectAll from '../soundbites/click-deselect.mp3';
+import errorSound from '../soundbites/error.mp3';
 
 const todo = [
     {
@@ -41,6 +44,9 @@ const clickCompleted = new Audio(Completed);
 const clickAlert = new Audio(Alert);
 const clickClearSelected = new Audio(clearSelected);
 const enterAddTask = new Audio(newTask);
+const clickSelectAll = new Audio(selectAll);
+const clickDeselectAll = new Audio(deselectAll);
+const error = new Audio(errorSound);
 
 class Navigation extends Component {
     constructor() {
@@ -55,7 +61,10 @@ class Navigation extends Component {
                 completed: clickCompleted,
                 clearSelected: clickClearSelected,
                 alert: clickAlert,
-                addTask: enterAddTask
+                addTask: enterAddTask,
+                selectAll: clickSelectAll,
+                deselectAll: clickDeselectAll,
+                error: error
             },
             allSelected: false
         };
@@ -86,18 +95,24 @@ class Navigation extends Component {
     }
 
     clearSelected = () => {
-        this.state.soundbites.clearSelected.play();
-        const updatedList = this.state.todoList.map(task => {
-            if (task.status === this.state.done) {
-                return {
-                    ...task,
-                    completed: !task.completed,
-                    status: this.state.incomplete
-                };
-            }
-            return task;
-        });
-        this.setState({ todoList: updatedList });
+        const selectionCheck = this.state.todoList.filter(task => task.completed);
+        if (selectionCheck.length > 0) {
+            this.state.soundbites.clearSelected.play();
+            const updatedList = this.state.todoList.map(task => {
+                if (task.status === this.state.done) {
+                    return {
+                        ...task,
+                        completed: false,
+                        status: this.state.incomplete
+                    };
+                }
+                return task;
+            });
+            this.setState({ todoList: updatedList, allSelected: false });
+        }
+        else {
+            this.state.soundbites.error.play();
+        }
     }
 
     confirmClear = () => {
@@ -105,6 +120,13 @@ class Navigation extends Component {
         const completionCheck = this.state.todoList.filter(task => task.status === this.state.done);
         if (completionCheck.length === 0) {
             window.alert('Error:  There are no completed tasks to clear!');
+        }
+        else if (completionCheck.length === 1) {
+            if (window.confirm(`Are you sure you want to clear the task '${completionCheck[0].task}' ?`)) {
+                this.state.soundbites.completed.play();
+                const updatedList = this.state.todoList.filter(task => task.status === this.state.incomplete);
+                this.setState({ todoList: updatedList });
+            }
         }
         else {
             if (window.confirm('Are you sure you want to clear the completed tasks?  This cannot be undone!')) {
@@ -120,7 +142,7 @@ class Navigation extends Component {
         console.log();
         const taskObj = {
             id: this.state.todoList.length,
-            task: task,
+            task: `${task}!`,
             completed: false,
             status: this.state.incomplete
         };
@@ -130,6 +152,7 @@ class Navigation extends Component {
 
     selectAll = () => {
         if (this.state.allSelected) {
+            this.state.soundbites.deselectAll.play();
             const cleared = this.state.todoList.map(taskObj => {
               return {
                 ...taskObj,
@@ -140,6 +163,7 @@ class Navigation extends Component {
             this.setState({ todoList: cleared, allSelected: false });
           }
           else {
+            this.state.soundbites.selectAll.play();
             const selected = this.state.todoList.map(taskObj => {
               return {
                 ...taskObj,
@@ -163,7 +187,7 @@ class Navigation extends Component {
                             confirmClear={this.confirmClear}
                             soundbites={this.state.soundbites}
                             selectAll={this.selectAll}
-                            todoList={this.state.todoList} 
+                            todoList={this.state.todoList}
                         />  
                     </Tab>
                     <Tab eventKey='board' title='Board'>
