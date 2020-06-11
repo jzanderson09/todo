@@ -6,12 +6,19 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: space-evenly;
+        h1, h3 {
+            width: 100%;
+        }
+        form {
+            width: 100%;
+            margin: 3% auto 0; 
+        }
         .optn-btns {
             width: 100%;
-            margin: 10% auto 0;
+            margin: 2% auto;
             display: flex;
-            flex-flow: row nowrap;
+            flex-flow: row wrap;
             justify-content: space-evenly;
         }
-    }    
+    }   
 }

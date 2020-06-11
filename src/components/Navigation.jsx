@@ -3,7 +3,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import '../sass/Navigation.scss';
 
 //Components:
-import Todo from './Todo';
+import Todo from './Todo/Todo';
 
 // Audio imports:
 import Incomplete from '../soundbites/click-incomplete.mp3';
@@ -18,19 +18,19 @@ import errorSound from '../soundbites/error.mp3';
 
 const todo = [
     {
-        id: 0,
+        id: Date.now(),
         task: 'Walk The Dog!',
         completed: false,
         status: 'danger'
     },
     {
-        id: 1,
+        id: Date.now() + 1,
         task: 'Do The Dishes!',
         completed: false,
         status: 'danger'
     },
     {
-        id: 2,
+        id: Date.now() + 3,
         task: 'Get 8 Hours Sleep!',
         completed: false,
         status: 'danger'
@@ -59,6 +59,7 @@ class Navigation extends Component {
         };
     }
 
+    // Marks tasks as completed and changes button style:
     completeTasks = taskId => {
         const updatedList = this.state.todoList.map(task => {
             if (task.id === taskId) {
@@ -77,12 +78,12 @@ class Navigation extends Component {
                         };
                 }
             }
-
             return task;
         });
         this.setState({ todoList: updatedList });
     }
 
+    // Clears any selected tasks, ready for completion:
     clearSelected = () => {
         const selectionCheck = this.state.todoList.filter(task => task.completed);
         if (selectionCheck.length > 0) {
@@ -104,6 +105,7 @@ class Navigation extends Component {
         }
     }
 
+    // Upon confirmation from user, clears completed tasks:
     confirmClear = () => {
         this.state.soundbites.alert.play();
         const completionCheck = this.state.todoList.filter(task => task.status === this.state.done);
@@ -126,11 +128,12 @@ class Navigation extends Component {
         }
     }
 
+    // Adds task to the todoList:
     addTask = task => {
         this.state.soundbites.addTask.play();
         console.log();
         const taskObj = {
-            id: this.state.todoList.length,
+            id: Date.now(),
             task: `${task}!`,
             completed: false,
             status: this.state.incomplete
@@ -139,6 +142,7 @@ class Navigation extends Component {
         this.setState({ todoList: updatedList });
     }
 
+    // Selects all tasks as ready for completion:
     selectAll = () => {
         if (this.state.allSelected) {
             this.state.soundbites.deselectAll.play();
@@ -174,8 +178,8 @@ class Navigation extends Component {
                             clearSelected={this.clearSelected}
                             completeTasks={this.completeTasks}
                             confirmClear={this.confirmClear}
-                            soundbites={this.state.soundbites}
                             selectAll={this.selectAll}
+                            soundbites={this.state.soundbites}
                             todoList={this.state.todoList}
                         />  
                     </Tab>

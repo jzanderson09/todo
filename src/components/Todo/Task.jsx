@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import '../sass/Task.scss';
+import '../../sass/Task.scss';
 
 
 const Task = ({ completeTasks, soundbites, task }) => {
