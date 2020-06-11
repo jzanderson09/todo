@@ -1,5 +1,9 @@
 .Task {
     .btn {
         box-shadow: 0.5rem 0.5rem 0.5rem #000;
+
+        p {
+            text-transform: capitalize;
+        }
     }
 }

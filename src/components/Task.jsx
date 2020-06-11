@@ -20,7 +20,7 @@ const Task = ({ completeTasks, soundbites, task }) => {
             <Button 
                 variant={task.status} 
                 onClick={clickButton}
-                >{task.task}</Button>
+                ><p>{task.task}</p></Button>
         </div>
     );
 };

@@ -11,6 +11,7 @@ import Done from '../soundbites/click-done.mp3';
 import Completed from '../soundbites/click-completed.mp3';
 import Alert from '../soundbites/click-prompt.mp3';
 import clearSelected from '../soundbites/click-clear-selected.mp3';
+import newTask from '../soundbites/add-task.mp3';
 
 const todo = [
     {
@@ -39,6 +40,7 @@ const clickDone = new Audio(Done);
 const clickCompleted = new Audio(Completed);
 const clickAlert = new Audio(Alert);
 const clickClearSelected = new Audio(clearSelected);
+const enterAddTask = new Audio(newTask);
 
 class Navigation extends Component {
     constructor() {
@@ -52,8 +54,10 @@ class Navigation extends Component {
                 done: clickDone,
                 completed: clickCompleted,
                 clearSelected: clickClearSelected,
-                alert: clickAlert
-            }
+                alert: clickAlert,
+                addTask: enterAddTask
+            },
+            allSelected: false
         };
     }
 
@@ -111,17 +115,55 @@ class Navigation extends Component {
         }
     }
 
+    addTask = task => {
+        this.state.soundbites.addTask.play();
+        console.log();
+        const taskObj = {
+            id: this.state.todoList.length,
+            task: task,
+            completed: false,
+            status: this.state.incomplete
+        };
+        const updatedList = [...this.state.todoList, taskObj];
+        this.setState({ todoList: updatedList });
+    }
+
+    selectAll = () => {
+        if (this.state.allSelected) {
+            const cleared = this.state.todoList.map(taskObj => {
+              return {
+                ...taskObj,
+                completed: false,
+                status: this.state.incomplete
+              }
+            });
+            this.setState({ todoList: cleared, allSelected: false });
+          }
+          else {
+            const selected = this.state.todoList.map(taskObj => {
+              return {
+                ...taskObj,
+                completed: true,
+                status: this.state.done
+              };
+            });
+            this.setState({ todoList: selected, allSelected: true });
+          }
+    }
+
     render() {
         return (
             <div className='Navigation'>
                 <Tabs defaultActiveKey='todo'>
                     <Tab eventKey='todo' title='Todo'>
-                        <Todo 
-                            todoList={this.state.todoList} 
-                            completeTasks={this.completeTasks}
+                        <Todo
+                            addTask={this.addTask}
                             clearSelected={this.clearSelected}
+                            completeTasks={this.completeTasks}
                             confirmClear={this.confirmClear}
                             soundbites={this.state.soundbites}
+                            selectAll={this.selectAll}
+                            todoList={this.state.todoList} 
                         />  
                     </Tab>
                     <Tab eventKey='board' title='Board'>
