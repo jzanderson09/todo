@@ -4,7 +4,7 @@ import '../sass/Todo/Navigation.scss';
 
 //Components:
 import Todo from './Todo/Todo';
-import Calendar from './Calendar/Calendar';
+// import Calendar from './Calendar/Calendar';
 
 // Audio imports:
 import Incomplete from '../soundbites/click-incomplete.mp3';
