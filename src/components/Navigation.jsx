@@ -4,6 +4,7 @@ import '../sass/Todo/Navigation.scss';
 
 //Components:
 import Todo from './Todo/Todo';
+import Calendar from './Calendar/Calendar';
 
 // Audio imports:
 import Incomplete from '../soundbites/click-incomplete.mp3';
@@ -182,12 +183,12 @@ class Navigation extends Component {
                             todoList={this.state.todoList}
                         />  
                     </Tab>
-                    <Tab eventKey='board' title='Board'>
+                    {/* <Tab eventKey='board' title='Board'>
                         <h1>Board!</h1>
                     </Tab>
                     <Tab eventKey='calendar' title='Calendar'>
-                        <h1>Calendar!</h1>
-                    </Tab>
+                        <Calendar />
+                    </Tab> */}
                 </Tabs>
             </div>
         );
