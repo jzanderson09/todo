@@ -16,6 +16,7 @@ import newTask from '../soundbites/add-task.mp3';
 import selectAll from '../soundbites/click-select-all.mp3';
 import errorSound from '../soundbites/error.mp3';
 
+//Sample Data:
 const todo = [
     {
         id: Date.now(),
@@ -130,7 +131,6 @@ class Navigation extends Component {
     // Adds task to the todoList:
     addTask = task => {
         this.state.soundbites.addTask.play();
-        console.log();
         const taskObj = {
             id: Date.now(),
             task: `${task}!`,
