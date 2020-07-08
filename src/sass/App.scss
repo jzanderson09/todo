@@ -1,0 +1,9 @@
+@import "~bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap');
+
+.App {
+  text-align: center;
+  font-family: 'Open Sans Condensed', sans-serif;
+  background-image: url('../corkboard-bg.jpg');
+  height: 100vh;
+}
