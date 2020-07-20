@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import '../sass/Todo/Navigation.scss';
+import '../sass/TodoList.scss';
 
 //Components:
 import Todo from './Todo/Todo';
-// import Calendar from './Calendar/Calendar';
 
 // Audio imports:
 import Incomplete from '../soundbites/click-incomplete.mp3';
@@ -183,12 +182,6 @@ class Navigation extends Component {
                             todoList={this.state.todoList}
                         />  
                     </Tab>
-                    {/* <Tab eventKey='board' title='Board'>
-                        <h1>Board!</h1>
-                    </Tab>
-                    <Tab eventKey='calendar' title='Calendar'>
-                        <Calendar />
-                    </Tab> */}
                 </Tabs>
             </div>
         );

@@ -2,12 +2,12 @@ import React from 'react';
 import './sass/App.scss';
 
 // Components:
-import Navigation from './components/Navigation';
+import TodoList from './components/TodoList';
 
 function App() {
   return (
     <div className='App'>
-      <Navigation />
+      <TodoList />
     </div>
   );
 }
