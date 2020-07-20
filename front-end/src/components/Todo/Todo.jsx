@@ -71,7 +71,11 @@ const Todo = props => {
                             value={newTask}
                             onChange={changeHandler}
                         />
-                        <Button variant='info' style={{ margin: '3%' }}>Submit</Button>
+                        <Button 
+                            variant='info' 
+                            style={{ margin: '3%' }}
+                            onClick={addNewTask}
+                        >Submit</Button>
                     </form>
                     <div className='optn-btns'>
                         <Button variant='light' onClick={props.clearSelected}>Clear Selected</Button>
