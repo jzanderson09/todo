@@ -52,7 +52,7 @@ server.get('/tasks/:id', async (req, res) => {
 
 /* ---------- UPDATE ---------- */
 
-// Updates task data from front-end to the DB:
+// Updates task data (completed and status) from front-end to the DB:
 server.put('/tasks/:id', async (req, res) => {
     try {
         const updatedTasks = await db.updateTask(req.params, req.body);
@@ -63,19 +63,27 @@ server.put('/tasks/:id', async (req, res) => {
     }
 });
 
-// Updates tasks by removing completed tasks from the DB:
-server.put('/tasks', async (req, res) => {
+/* ---------- DELETE ---------- */
+// Updates tasklist by deleting completed tasks from the DB:
+server.delete('/tasks', async (req, res) => {
     try {
         const updatedTasks = await db.clearCompletedTasks();
+        return res.status(200).json({ message: 'Completed tasks removed!' });
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
+});
+
+server.delete('/tasks/:id', async (req, res) => {
+    try {
+        const updatedTasks = await db.deleteTask(req.params);
         return res.status(204);
     }
     catch (err) {
         return res.status(500).json(err);
     }
-
 });
-
-/* ---------- DELETE ---------- */
 
 
 module.exports = server;

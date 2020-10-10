@@ -8,13 +8,15 @@ module.exports = {
     findTasks,
     findTasksById,
     updateTask,
-    deleteTask
+    deleteTask,
+    clearCompletedTasks
 };
 
 // CRUD Operations:
 
 /* -------------- Create -------------- */
 
+// Add new task to the DB:
 function addTask(task) {
     return db('tasks').insert(post);
 }
