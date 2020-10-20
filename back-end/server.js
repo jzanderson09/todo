@@ -8,7 +8,7 @@ server.use(cors());
 
 // Routes:
 server.get('/', (req, res) => {
-    res.status(200).json({ message: 'Welome to the server!' });
+    res.status(200).json({ message: 'Welcome to the server!' });
 });
 
 /* ---------- CREATE ---------- */
@@ -16,11 +16,14 @@ server.get('/', (req, res) => {
 // Adds task to the DB:
 server.post('/tasks', async (req, res) => {
     try {
-        const updatedTasks= await db.addTask(req.body);
-        return res.status(201).json({ message: 'Task added!' });
+        console.log(req.body);
+        const updatedTasks = await db.addTask(req.body);
+        console.log(updatedTasks);
+        res.status(201).json(updatedTasks);
     }
     catch (err) {
-        return res.status(500).json({ message: err });
+        console.log(err)
+        res.status(500).json(err);
     }
 });
 
@@ -41,25 +44,36 @@ server.get('/tasks', async (req, res) => {
 // Fetches task specified by id from the DB:
 server.get('/tasks/:id', async (req, res) => {
     try {
-        const task = await db.findTasksById(req.params);
+        const {id} = req.params;
+        const task = await db.findTasksById(id);
+        if (task.length === 0) {
+            return res.status(500).json('Error:  Task does not exist!');
+        }
         return res.status(200).json(task);
     }
     catch (err) {
         console.log(err);
-        res.status(500);
+        return res.status(500).json(err);
     }
 });
 
 /* ---------- UPDATE ---------- */
 
-// Updates task data (completed and status) from front-end to the DB:
+// Toggles completed for task, styling with status will be done on front end:
 server.put('/tasks/:id', async (req, res) => {
     try {
-        const updatedTasks = await db.updateTask(req.params, req.body);
-        return res.status(200).json({ message: 'task updated!' });
+        const {id} = req.params;
+        const task = req.body;
+        const taskName = task.task;
+        const updatedTask = await db.updateTask(id, task);
+        if (updatedTask === 1) {
+            return res.status(200).json(`Your task #${id}, '${taskName}' has been updated!`);
+        }
+        return res.status(500).json('Error:  Task does not exist!');
     }
     catch (err) {
-        return res.status(500).json({ error: err });
+        console.log(err);
+        res.status(500);
     }
 });
 
@@ -68,7 +82,7 @@ server.put('/tasks/:id', async (req, res) => {
 server.delete('/tasks', async (req, res) => {
     try {
         const updatedTasks = await db.clearCompletedTasks();
-        return res.status(200).json({ message: 'Completed tasks removed!' });
+        return res.status(200).json(updatedTasks);
     }
     catch (err) {
         return res.status(500).json(err);
@@ -77,8 +91,9 @@ server.delete('/tasks', async (req, res) => {
 
 server.delete('/tasks/:id', async (req, res) => {
     try {
-        const updatedTasks = await db.deleteTask(req.params);
-        return res.status(204);
+        const {id} = req.params;
+        const updatedTasks = await db.deleteTask(id);
+        return res.status(200).json({message: 'Task deleted!'});
     }
     catch (err) {
         return res.status(500).json(err);

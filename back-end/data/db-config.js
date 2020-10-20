@@ -18,7 +18,7 @@ module.exports = {
 
 // Add new task to the DB:
 function addTask(task) {
-    return db('tasks').insert(post);
+    return db('tasks').insert(task);
 }
 
 
@@ -31,21 +31,21 @@ function findTasks() {
 
 // Returns tasks from the DB, specified by ID:
 function findTasksById(id) {
-    return db('tasks').where(id);
+    return db('tasks').where({id});
 }
 
 /* -------------- Update -------------- */
 
 // Updates task, specified by ID:
-function updateTask(id, newPost) {
-    return db('tasks').where(id).update(newPost);
+function updateTask(id, newTask) {
+    return db('tasks').where({id}).update(newTask);
 }
 
 /* -------------- Delete -------------- */
 
 // Deletes task:
 function deleteTask(id) {
-    return db('tasks').where(id).del();
+    return db('tasks').where({id}).del();
 }
 
 // Updates tasks list, deleting completed from the DB:
