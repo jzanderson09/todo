@@ -8,20 +8,17 @@ exports.seed = function(knex) {
         {
           id: 1, 
           task: 'Walk The Dog!',
-          completed: false,
-          status: 'danger'
+          completed: false
         },
         {
           id: 2, 
           task: 'Do The Dishes!',
-          completed: false,
-          status: 'danger'
+          completed: false
         },
         {
           id: 3, 
           task: 'Get 8 Hours Sleep!',
-          completed: false,
-          status: 'danger'
+          completed: false
         }
       ]);
     });

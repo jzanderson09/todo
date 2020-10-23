@@ -1,26 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import '../../sass/Todo/Task.scss';
 
 
-const Task = ({ completeTasks, soundbites, task }) => {
+const Task = (props) => {
+    const incomplete = 'danger';
+    const complete = 'success';
+
+    const [status, setStatus] = useState(incomplete);
 
     const clickButton = () => {
-        if (task.status === 'danger') {
-            soundbites.done.play();
+
+        const { id } = props.task;
+        
+        if (status === incomplete) {
+            const updatedTask = {
+                id: id,
+                task: props.task.task,
+                completed: !props.task.completed
+            };
+            props.toggleCompleted(id, updatedTask);
+            setStatus(complete);
+            props.soundbites.completed.play();
         }
         else {
-            soundbites.incomplete.play();
+            const updatedTask = {
+                id: id,
+                task: props.task.task,
+                completed: !props.task.completed
+            }
+            props.toggleCompleted(id, updatedTask);
+            setStatus(incomplete);
+            props.soundbites.incomplete.play();
         }
-        completeTasks(task.id);
     }
 
     return (
         <div className='Task'>
             <Button 
-                variant={task.status} 
+                variant={status} 
                 onClick={clickButton}
-                ><p>{task.task}</p></Button>
+                ><p>{props.task.task}</p></Button>
         </div>
     );
 };

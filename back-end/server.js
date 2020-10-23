@@ -63,13 +63,13 @@ server.get('/tasks/:id', async (req, res) => {
 server.put('/tasks/:id', async (req, res) => {
     try {
         const {id} = req.params;
+        console.log(id);
         const task = req.body;
+        console.log(task);
         const taskName = task.task;
+        console.log(taskName);
         const updatedTask = await db.updateTask(id, task);
-        if (updatedTask === 1) {
-            return res.status(200).json(`Your task #${id}, '${taskName}' has been updated!`);
-        }
-        return res.status(500).json('Error:  Task does not exist!');
+        console.log(updatedTask);
     }
     catch (err) {
         console.log(err);

@@ -29,7 +29,7 @@ const Todo = props => {
                     {props.todoList.map(task => 
                         <Task 
                             key={task.id} 
-                            completeTasks={props.completeTasks}
+                            toggleCompleted={props.toggleCompleted}
                             soundbites={props.soundbites}
                             task={task}
                         /> 

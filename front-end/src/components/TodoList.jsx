@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Tab, Tabs } from 'react-bootstrap';
+import axios from 'axios';
+import { Tabs, Tab } from 'react-bootstrap';
 import '../sass/TodoList.scss';
 
 //Components:
@@ -15,38 +16,17 @@ import newTask from '../soundbites/add-task.mp3';
 import selectAll from '../soundbites/click-select-all.mp3';
 import errorSound from '../soundbites/error.mp3';
 
-const todo = [
-    {
-        id: Date.now(),
-        task: 'Walk The Dog!',
-        completed: false,
-        status: 'danger'
-    },
-    {
-        id: Date.now() + 1,
-        task: 'Do The Dishes!',
-        completed: false,
-        status: 'danger'
-    },
-    {
-        id: Date.now() + 3,
-        task: 'Get 8 Hours Sleep!',
-        completed: false,
-        status: 'danger'
-    }
-];
-
 class Navigation extends Component {
     constructor() {
         super();
         this.state = {
-            todoList: todo,
+            todoList: [],
             incomplete: 'danger',
             done: 'success',
             soundbites: {
                 incomplete: new Audio(Incomplete),
-                done: new Audio(Done),
-                completed: new Audio(Completed),
+                completed: new Audio(Done),
+                done: new Audio(Completed),
                 clearSelected: new Audio(clearSelected),
                 alert: new Audio(Alert),
                 addTask: new Audio(newTask),
@@ -57,50 +37,22 @@ class Navigation extends Component {
         };
     }
 
-    // Marks tasks as completed and changes button style:
-    completeTasks = taskId => {
-        const updatedList = this.state.todoList.map(task => {
-            if (task.id === taskId) {
-                switch (task.status) {
-                    case 'danger':
-                        return {
-                            ...task,
-                            completed: !task.completed,
-                            status: this.state.done
-                        };
-                    default:
-                        return {
-                            ...task,
-                            completed: !task.completed,
-                            status: this.state.incomplete
-                        };
-                }
-            }
-            return task;
-        });
-        this.setState({ todoList: updatedList });
+    componentDidMount() {
+        axios
+            .get('http://localhost:8000/tasks')
+            .then(res => this.setState({ todoList: res.data }))
+            .catch(err => console.log(err));
     }
 
-    // Clears any selected tasks, ready for completion:
-    clearSelected = () => {
-        const selectionCheck = this.state.todoList.filter(task => task.completed);
-        if (selectionCheck.length > 0) {
-            this.state.soundbites.clearSelected.play();
-            const updatedList = this.state.todoList.map(task => {
-                if (task.status === this.state.done) {
-                    return {
-                        ...task,
-                        completed: false,
-                        status: this.state.incomplete
-                    };
-                }
-                return task;
-            });
-            this.setState({ todoList: updatedList, allSelected: false });
-        }
-        else {
-            this.state.soundbites.error.play();
-        }
+    // Marks tasks as completed and changes button style:
+    toggleCompleted = (id, task) => {
+        console.log(task);
+        console.log(id);
+        axios
+            .put(`http://localhost:8000/tasks/:${id}`, task)
+            .then(res => this.setState({ todoList: res.data }))
+            .catch(err => console.log(err));
+        console.log(this.state.todoList[id]);
     }
 
     // Upon confirmation from user, clears completed tasks:
@@ -113,8 +65,10 @@ class Navigation extends Component {
         else if (completionCheck.length === 1) {
             if (window.confirm(`Are you sure you want to clear the task '${completionCheck[0].task}' ?`)) {
                 this.state.soundbites.completed.play();
-                const updatedList = this.state.todoList.filter(task => task.status === this.state.incomplete);
-                this.setState({ todoList: updatedList });
+                axios
+                    .del('http://localhost:8000/tasks')
+                    .then(res => this.setState({ todoList: res.data }))
+                    .catch(err => console.log(err));
             }
         }
         else {
@@ -130,15 +84,16 @@ class Navigation extends Component {
     addTask = task => {
         if (task.length > 0) {
             this.state.soundbites.addTask.play();
-            console.log();
+            // Creates the task object ready to be pushed to the DB:
             const taskObj = {
-                id: Date.now(),
                 task: `${task}!`,
                 completed: false,
                 status: this.state.incomplete
             };
-            const updatedList = [...this.state.todoList, taskObj];
-            this.setState({ todoList: updatedList });
+            axios
+                .post('http://localhost:8000/tasks', taskObj)
+                .then(res => this.setState({ todoList: res.data }))
+                .catch(err => console.log(err));
         }
         else {
             this.state.soundbites.error.play();
@@ -148,29 +103,7 @@ class Navigation extends Component {
 
     // Selects all tasks as ready for completion:
     selectAll = () => {
-        const selectionCheck = this.state.todoList.filter(task => task.completed && task.status === this.state.done);
-        if (selectionCheck.length > 0) {
-            this.state.soundbites.clearSelected.play();
-            const cleared = this.state.todoList.map(taskObj => {
-              return {
-                ...taskObj,
-                completed: false,
-                status: this.state.incomplete
-              }
-            });
-            this.setState({ todoList: cleared, allSelected: false });
-          }
-          else {
-            this.state.soundbites.selectAll.play();
-            const selected = this.state.todoList.map(taskObj => {
-              return {
-                ...taskObj,
-                completed: true,
-                status: this.state.done
-              };
-            });
-            this.setState({ todoList: selected, allSelected: true });
-          }
+
     }
 
     render() {
@@ -180,8 +113,7 @@ class Navigation extends Component {
                     <Tab eventKey='todo' title='Todo'>
                         <Todo
                             addTask={this.addTask}
-                            clearSelected={this.clearSelected}
-                            completeTasks={this.completeTasks}
+                            toggleCompleted={this.toggleCompleted}
                             confirmClear={this.confirmClear}
                             selectAll={this.selectAll}
                             soundbites={this.state.soundbites}

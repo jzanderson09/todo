@@ -8,9 +8,6 @@ exports.up = function(knex) {
             .notNullable();
         tbl
             .boolean('completed');
-        tbl
-            .text('status')
-            .notNullable();
   });
 
 };
