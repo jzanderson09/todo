@@ -1,0 +1,26 @@
+@import '../breakpoints.scss';
+
+.Todo {
+    width: 80%;
+    margin: 3% auto;
+    box-shadow: 1rem 1rem 1rem #000;
+    .jumbotron {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        h1, h3 {
+            width: 100%;
+        }
+        form {
+            width: 100%;
+            margin: 3% auto 0; 
+        }
+        .optn-btns {
+            width: 100%;
+            margin: 2% auto;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-evenly;
+        }
+    }   
+}
